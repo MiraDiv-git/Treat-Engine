@@ -11,7 +11,6 @@ making development simple and giving you full control over the hardware.
 It is distributed as open-source under the GPL 2.0 licence - highly recommend 
 giving it a read before forking the engine ;)
 
----
 
 ## Features
 
@@ -20,7 +19,6 @@ giving it a read before forking the engine ;)
 - Lightweight and minimalistic
 - Open-source code under GPL 2.0 license 
 
----
 
 ## Installation
 
@@ -43,12 +41,10 @@ or
 ```
 or check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for compiled executable files
 
----
 
 ## License
 This project is distributed under [GNU General Public License v.2.0](LICENSE)
 
----
 
 ## Contacts
 If you have questions or suggestions — feel free to *open an issue*
