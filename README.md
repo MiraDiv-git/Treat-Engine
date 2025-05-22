@@ -51,5 +51,5 @@ This project is distributed under [GNU General Public License v.2.0](LICENSE)
 ---
 
 ## Contacts
-If you have questions or suggestions — feel free to open an issue
+If you have questions or suggestions — feel free to *open an issue*
 or contact me via DM
