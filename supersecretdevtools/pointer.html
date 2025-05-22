@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenGL Coordinate Visualizer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        .canvas-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .controls-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 500px;
+        }
+
+        #canvas {
+            border: 3px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: crosshair;
+            background: #f8fafc;
+            transition: border-color 0.3s ease;
+        }
+
+        #canvas:hover {
+            border-color: #667eea;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fc8181, #f56565);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 5px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .coordinates-display {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .point-list {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .point-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .point-item:last-child {
+            border-bottom: none;
+        }
+
+        .point-coords {
+            font-family: 'Courier New', monospace;
+            color: #4a5568;
+        }
+
+        .delete-point {
+            background: #fed7d7;
+            color: #c53030;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-point:hover {
+            background: #feb2b2;
+        }
+
+        .info-panel {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #2d3748;
+        }
+
+        .grid-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: #cbd5e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #667eea;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(20px);
+        }
+
+        .coords-info {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-section">
+            <h1>OpenGL Coordinate Visualizer</h1>
+            
+            <div class="toolbar">
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="point">Точки</button>
+                    <button class="mode-btn" data-mode="line">Линии</button>
+                    <button class="mode-btn" data-mode="triangle">Треугольники</button>
+                    <button class="mode-btn" data-mode="move">🖱 Перемещение</button>
+                </div>
+                <button class="btn btn-secondary" id="undoBtn">↶ Отменить</button>
+                <button class="btn btn-danger" id="clearBtn">🗑 Очистить</button>
+                <button class="btn btn-primary" id="copyBtn">📋 Копировать код</button>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="canvas" width="600" height="500"></canvas>
+                <div class="coords-info" id="coordsInfo" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="grid-toggle">
+                <span>Сетка:</span>
+                <div class="toggle-switch active" id="gridToggle">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+
+            <div class="grid-toggle">
+                <span>Привязка к сетке:</span>
+                <div class="toggle-switch" id="snapToggle">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <strong>Быстрое создание фигур:</strong><br>
+                <button class="btn btn-secondary" id="createSquare" style="margin: 5px 5px 5px 0; padding: 4px 8px; font-size: 11px;">■ Квадрат</button>
+                <button class="btn btn-secondary" id="createRect" style="margin: 5px 5px 5px 0; padding: 4px 8px; font-size: 11px;">▬ Прямоугольник</button>
+                <button class="btn btn-secondary" id="createTriangle" style="margin: 5px 5px 5px 0; padding: 4px 8px; font-size: 11px;">▲ Треугольник</button>
+            </div>
+
+            <div class="info-panel">
+                <strong>Импорт кода:</strong><br>
+                <textarea id="importCode" placeholder="Вставьте ваш код с координатами numpy..." style="width: 100%; height: 60px; font-family: monospace; font-size: 11px; margin: 5px 0; padding: 5px; border: 1px solid #e2e8f0; border-radius: 4px;"></textarea>
+                <button class="btn btn-primary" id="importBtn" style="padding: 4px 8px; font-size: 11px;">📥 Импорт</button>
+            </div>
+
+            <div class="info-panel">
+                <strong>Режимы работы:</strong><br>
+                • <strong>Точки</strong> - клик для добавления точек<br>
+                • <strong>Линии</strong> - клик для создания линий (2 точки)<br>
+                • <strong>Треугольники</strong> - клик для создания треугольников (3 точки)<br>
+                • <strong>Перемещение</strong> - перетаскивание точек и фигур
+            </div>
+
+            <h3 style="margin: 0 0 10px 0; color: #4a5568;">Точки на холсте:</h3>
+            <div class="point-list" id="pointList"></div>
+
+            <h3 style="margin: 15px 0 10px 0; color: #4a5568;">Код для Python:</h3>
+            <div class="coordinates-display" id="coordsDisplay">
+                <div style="color: #68d391;"># Пока точек нет</div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" id="exportBtn">💾 Экспорт в файл</button>
+        </div>
+    </div>
+
+    <script>
+        class CoordinateVisualizer {
+            constructor() {
+                this.canvas = document.getElementById('canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.points = [];
+                this.lines = [];
+                this.triangles = [];
+                this.mode = 'point';
+                this.showGrid = true;
+                this.snapToGrid = false;
+                this.tempPoints = []; // для режимов линий и треугольников
+                this.history = [];
+                this.dragState = {
+                    isDragging: false,
+                    dragType: null, // 'point', 'line', 'triangle'
+                    dragIndex: -1,
+                    dragPointIndex: -1, // для точек внутри линий/треугольников
+                    startPos: null
+                };
+                
+                this.initEventListeners();
+                this.render();
+            }
+
+            initEventListeners() {
+                // Режимы работы
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.mode = e.target.dataset.mode;
+                        this.tempPoints = [];
+                        this.dragState.isDragging = false;
+                        
+                        // Меняем курсор в зависимости от режима
+                        if (this.mode === 'move') {
+                            this.canvas.style.cursor = 'grab';
+                        } else {
+                            this.canvas.style.cursor = 'crosshair';
+                        }
+                        
+                        this.render();
+                    });
+                });
+
+                // Клики по холсту
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+                this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
+                this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+                this.canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
+                this.canvas.addEventListener('mouseleave', () => {
+                    document.getElementById('coordsInfo').style.display = 'none';
+                    this.handleMouseUp();
+                });
+
+                // Кнопки управления
+                document.getElementById('clearBtn').addEventListener('click', () => this.clear());
+                document.getElementById('undoBtn').addEventListener('click', () => this.undo());
+                document.getElementById('copyBtn').addEventListener('click', () => this.copyCode());
+                document.getElementById('exportBtn').addEventListener('click', () => this.exportToFile());
+
+                // Переключатель сетки
+                document.getElementById('gridToggle').addEventListener('click', () => {
+                    this.showGrid = !this.showGrid;
+                    const toggle = document.getElementById('gridToggle');
+                    toggle.classList.toggle('active', this.showGrid);
+                    this.render();
+                });
+
+                // Переключатель привязки к сетке
+                document.getElementById('snapToggle').addEventListener('click', () => {
+                    this.snapToGrid = !this.snapToGrid;
+                    const toggle = document.getElementById('snapToggle');
+                    toggle.classList.toggle('active', this.snapToGrid);
+                });
+
+                // Быстрое создание фигур
+                document.getElementById('createSquare').addEventListener('click', () => this.createSquare());
+                document.getElementById('createRect').addEventListener('click', () => this.createRectangle());
+                document.getElementById('createTriangle').addEventListener('click', () => this.createTriangleShape());
+
+                // Импорт кода
+                document.getElementById('importBtn').addEventListener('click', () => this.importCode());
+            }
+
+            saveState() {
+                this.history.push({
+                    points: [...this.points],
+                    lines: [...this.lines],
+                    triangles: [...this.triangles]
+                });
+                if (this.history.length > 50) {
+                    this.history.shift();
+                }
+            }
+
+            undo() {
+                if (this.history.length > 0) {
+                    const state = this.history.pop();
+                    this.points = state.points;
+                    this.lines = state.lines;
+                    this.triangles = state.triangles;
+                    this.tempPoints = [];
+                    this.render();
+                    this.updateUI();
+                }
+            }
+
+            canvasToOpenGL(x, y) {
+                const rect = this.canvas.getBoundingClientRect();
+                const canvasX = x - rect.left;
+                const canvasY = y - rect.top;
+                
+                let glX = (canvasX / this.canvas.width) * 2 - 1;
+                let glY = -((canvasY / this.canvas.height) * 2 - 1);
+                
+                // Привязка к сетке если включена
+                if (this.snapToGrid) {
+                    const gridSize = 0.1; // размер ячейки сетки в OpenGL координатах
+                    glX = Math.round(glX / gridSize) * gridSize;
+                    glY = Math.round(glY / gridSize) * gridSize;
+                }
+                
+                return { x: parseFloat(glX.toFixed(3)), y: parseFloat(glY.toFixed(3)) };
+            }
+
+            openGLToCanvas(glX, glY) {
+                const canvasX = (glX + 1) * this.canvas.width / 2;
+                const canvasY = (1 - glY) * this.canvas.height / 2;
+                return { x: canvasX, y: canvasY };
+            }
+
+            hitTest(glCoords) {
+                const tolerance = 0.05; // радиус попадания
+                
+                // Проверяем точки
+                for (let i = 0; i < this.points.length; i++) {
+                    const point = this.points[i];
+                    const distance = Math.sqrt(
+                        Math.pow(glCoords.x - point.x, 2) + 
+                        Math.pow(glCoords.y - point.y, 2)
+                    );
+                    if (distance <= tolerance) {
+                        return { type: 'point', index: i };
+                    }
+                }
+                
+                // Проверяем точки в линиях
+                for (let i = 0; i < this.lines.length; i++) {
+                    for (let j = 0; j < this.lines[i].length; j++) {
+                        const point = this.lines[i][j];
+                        const distance = Math.sqrt(
+                            Math.pow(glCoords.x - point.x, 2) + 
+                            Math.pow(glCoords.y - point.y, 2)
+                        );
+                        if (distance <= tolerance) {
+                            return { type: 'line', index: i, pointIndex: j };
+                        }
+                    }
+                }
+                
+                // Проверяем точки в треугольниках
+                for (let i = 0; i < this.triangles.length; i++) {
+                    for (let j = 0; j < this.triangles[i].length; j++) {
+                        const point = this.triangles[i][j];
+                        const distance = Math.sqrt(
+                            Math.pow(glCoords.x - point.x, 2) + 
+                            Math.pow(glCoords.y - point.y, 2)
+                        );
+                        if (distance <= tolerance) {
+                            return { type: 'triangle', index: i, pointIndex: j };
+                        }
+                    }
+                }
+                
+                return null;
+            }
+
+            moveObject(type, index, pointIndex, deltaX, deltaY) {
+                if (type === 'point') {
+                    this.points[index].x += deltaX;
+                    this.points[index].y += deltaY;
+                    
+                    // Применяем привязку к сетке если включена
+                    if (this.snapToGrid) {
+                        const gridSize = 0.1;
+                        this.points[index].x = Math.round(this.points[index].x / gridSize) * gridSize;
+                        this.points[index].y = Math.round(this.points[index].y / gridSize) * gridSize;
+                    }
+                    
+                    // Ограничиваем координаты
+                    this.points[index].x = Math.max(-1, Math.min(1, this.points[index].x));
+                    this.points[index].y = Math.max(-1, Math.min(1, this.points[index].y));
+                    
+                } else if (type === 'line') {
+                    this.lines[index][pointIndex].x += deltaX;
+                    this.lines[index][pointIndex].y += deltaY;
+                    
+                    if (this.snapToGrid) {
+                        const gridSize = 0.1;
+                        this.lines[index][pointIndex].x = Math.round(this.lines[index][pointIndex].x / gridSize) * gridSize;
+                        this.lines[index][pointIndex].y = Math.round(this.lines[index][pointIndex].y / gridSize) * gridSize;
+                    }
+                    
+                    this.lines[index][pointIndex].x = Math.max(-1, Math.min(1, this.lines[index][pointIndex].x));
+                    this.lines[index][pointIndex].y = Math.max(-1, Math.min(1, this.lines[index][pointIndex].y));
+                    
+                } else if (type === 'triangle') {
+                    this.triangles[index][pointIndex].x += deltaX;
+                    this.triangles[index][pointIndex].y += deltaY;
+                    
+                    if (this.snapToGrid) {
+                        const gridSize = 0.1;
+                        this.triangles[index][pointIndex].x = Math.round(this.triangles[index][pointIndex].x / gridSize) * gridSize;
+                        this.triangles[index][pointIndex].y = Math.round(this.triangles[index][pointIndex].y / gridSize) * gridSize;
+                    }
+                    
+                    this.triangles[index][pointIndex].x = Math.max(-1, Math.min(1, this.triangles[index][pointIndex].x));
+                    this.triangles[index][pointIndex].y = Math.max(-1, Math.min(1, this.triangles[index][pointIndex].y));
+                }
+            }
+
+            handleClick(e) {
+                if (this.mode === 'move' || this.dragState.isDragging) return;
+                
+                this.saveState();
+                const glCoords = this.canvasToOpenGL(e.clientX, e.clientY);
+                
+                if (this.mode === 'point') {
+                    this.points.push(glCoords);
+                } else if (this.mode === 'line') {
+                    this.tempPoints.push(glCoords);
+                    if (this.tempPoints.length === 2) {
+                        this.lines.push([...this.tempPoints]);
+                        this.tempPoints = [];
+                    }
+                } else if (this.mode === 'triangle') {
+                    this.tempPoints.push(glCoords);
+                    if (this.tempPoints.length === 3) {
+                        this.triangles.push([...this.tempPoints]);
+                        this.tempPoints = [];
+                    }
+                }
+                
+                this.render();
+                this.updateUI();
+            }
+
+            handleMouseDown(e) {
+                if (this.mode !== 'move') return;
+                
+                const glCoords = this.canvasToOpenGL(e.clientX, e.clientY);
+                const hitResult = this.hitTest(glCoords);
+                
+                if (hitResult) {
+                    this.saveState();
+                    this.dragState = {
+                        isDragging: true,
+                        dragType: hitResult.type,
+                        dragIndex: hitResult.index,
+                        dragPointIndex: hitResult.pointIndex || -1,
+                        startPos: glCoords
+                    };
+                    this.canvas.style.cursor = 'grabbing';
+                }
+            }
+
+            handleMouseUp(e) {
+                if (this.dragState.isDragging) {
+                    this.dragState.isDragging = false;
+                    this.canvas.style.cursor = this.mode === 'move' ? 'grab' : 'crosshair';
+                    this.updateUI();
+                }
+            }
+
+            handleMouseMove(e) {
+                const glCoords = this.canvasToOpenGL(e.clientX, e.clientY);
+                
+                // Показываем координаты
+                const info = document.getElementById('coordsInfo');
+                info.textContent = `(${glCoords.x}, ${glCoords.y})`;
+                info.style.display = 'block';
+                info.style.left = (e.clientX + 10) + 'px';
+                info.style.top = (e.clientY - 30) + 'px';
+                
+                // Обработка перетаскивания
+                if (this.dragState.isDragging) {
+                    const deltaX = glCoords.x - this.dragState.startPos.x;
+                    const deltaY = glCoords.y - this.dragState.startPos.y;
+                    
+                    this.moveObject(this.dragState.dragType, this.dragState.dragIndex, 
+                                  this.dragState.dragPointIndex, deltaX, deltaY);
+                    
+                    this.dragState.startPos = glCoords;
+                    this.render();
+                } else if (this.mode === 'move') {
+                    // Меняем курсор при наведении на объекты
+                    const hitResult = this.hitTest(glCoords);
+                    this.canvas.style.cursor = hitResult ? 'grab' : 'default';
+                }
+            }
+
+            render() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Сетка
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+                
+                // Оси координат
+                this.drawAxes();
+                
+                // Треугольники (сначала, чтобы были под точками)
+                this.triangles.forEach(triangle => {
+                    this.ctx.fillStyle = 'rgba(102, 126, 234, 0.3)';
+                    this.ctx.strokeStyle = '#667eea';
+                    this.ctx.lineWidth = 2;
+                    
+                    this.ctx.beginPath();
+                    triangle.forEach((point, i) => {
+                        const canvasCoords = this.openGLToCanvas(point.x, point.y);
+                        if (i === 0) {
+                            this.ctx.moveTo(canvasCoords.x, canvasCoords.y);
+                        } else {
+                            this.ctx.lineTo(canvasCoords.x, canvasCoords.y);
+                        }
+                    });
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                    this.ctx.stroke();
+                });
+                
+                // Линии
+                this.lines.forEach(line => {
+                    this.ctx.strokeStyle = '#48bb78';
+                    this.ctx.lineWidth = 3;
+                    this.ctx.beginPath();
+                    const start = this.openGLToCanvas(line[0].x, line[0].y);
+                    const end = this.openGLToCanvas(line[1].x, line[1].y);
+                    this.ctx.moveTo(start.x, start.y);
+                    this.ctx.lineTo(end.x, end.y);
+                    this.ctx.stroke();
+                });
+                
+                // Временные точки для текущего режима
+                if (this.tempPoints.length > 0) {
+                    this.ctx.strokeStyle = '#ed8936';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.setLineDash([5, 5]);
+                    
+                    if (this.mode === 'line' && this.tempPoints.length === 1) {
+                        // Показываем линию от первой точки до курсора
+                    } else if (this.mode === 'triangle') {
+                        this.ctx.beginPath();
+                        this.tempPoints.forEach((point, i) => {
+                            const canvasCoords = this.openGLToCanvas(point.x, point.y);
+                            if (i === 0) {
+                                this.ctx.moveTo(canvasCoords.x, canvasCoords.y);
+                            } else {
+                                this.ctx.lineTo(canvasCoords.x, canvasCoords.y);
+                            }
+                        });
+                        this.ctx.stroke();
+                    }
+                    this.ctx.setLineDash([]);
+                }
+                
+                // Все точки (с подсветкой для перемещаемых)
+                [...this.points, ...this.tempPoints].forEach((point, index) => {
+                    const canvasCoords = this.openGLToCanvas(point.x, point.y);
+                    
+                    // Определяем, является ли точка активной при перетаскивании
+                    const isActiveDrag = this.dragState.isDragging && 
+                        ((this.dragState.dragType === 'point' && this.dragState.dragIndex === index && index < this.points.length) ||
+                         (this.dragState.dragType === 'line' && this.lines[this.dragState.dragIndex] && 
+                          this.lines[this.dragState.dragIndex][this.dragState.dragPointIndex] === point) ||
+                         (this.dragState.dragType === 'triangle' && this.triangles[this.dragState.dragIndex] && 
+                          this.triangles[this.dragState.dragIndex][this.dragState.dragPointIndex] === point));
+                    
+                    // Тень
+                    this.ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                    this.ctx.beginPath();
+                    this.ctx.arc(canvasCoords.x + 2, canvasCoords.y + 2, isActiveDrag ? 8 : 6, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Основной круг
+                    let fillColor = '#667eea';
+                    if (this.tempPoints.includes(point)) fillColor = '#ed8936';
+                    else if (isActiveDrag) fillColor = '#48bb78';
+                    
+                    this.ctx.fillStyle = fillColor;
+                    this.ctx.strokeStyle = 'white';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.arc(canvasCoords.x, canvasCoords.y, isActiveDrag ? 8 : 6, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.stroke();
+                    
+                    // Номер точки
+                    this.ctx.fillStyle = 'white';
+                    this.ctx.font = '10px Arial';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.fillText(index + 1, canvasCoords.x, canvasCoords.y + 3);
+                });
+            }
+
+            drawGrid() {
+                this.ctx.strokeStyle = '#e2e8f0';
+                this.ctx.lineWidth = 1;
+                
+                // Основная сетка (каждые 0.1 в OpenGL координатах)
+                const gridSteps = 20; // 20 шагов = сетка 0.1
+                
+                // Вертикальные линии
+                for (let i = 0; i <= gridSteps; i++) {
+                    const x = (i / gridSteps) * this.canvas.width;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                
+                // Горизонтальные линии
+                for (let i = 0; i <= gridSteps; i++) {
+                    const y = (i / gridSteps) * this.canvas.height;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+
+                // Более толстые линии каждые 0.5
+                this.ctx.strokeStyle = '#cbd5e0';
+                this.ctx.lineWidth = 2;
+                
+                for (let i = 0; i <= 4; i++) {
+                    const x = (i / 4) * this.canvas.width;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                    
+                    const y = (i / 4) * this.canvas.height;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+            }
+
+            drawAxes() {
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                
+                this.ctx.strokeStyle = '#a0aec0';
+                this.ctx.lineWidth = 2;
+                
+                // Ось X
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, centerY);
+                this.ctx.lineTo(this.canvas.width, centerY);
+                this.ctx.stroke();
+                
+                // Ось Y
+                this.ctx.beginPath();
+                this.ctx.moveTo(centerX, 0);
+                this.ctx.lineTo(centerX, this.canvas.height);
+                this.ctx.stroke();
+                
+                // Подписи осей
+                this.ctx.fillStyle = '#718096';
+                this.ctx.font = '12px Arial';
+                this.ctx.textAlign = 'center';
+                this.ctx.fillText('0', centerX - 15, centerY - 15);
+                this.ctx.fillText('-1', 10, centerY - 5);
+                this.ctx.fillText('1', this.canvas.width - 15, centerY - 5);
+                this.ctx.fillText('1', centerX + 15, 15);
+                this.ctx.fillText('-1', centerX + 15, this.canvas.height - 10);
+            }
+
+            updateUI() {
+                this.updatePointList();
+                this.updateCodeDisplay();
+            }
+
+            updatePointList() {
+                const list = document.getElementById('pointList');
+                list.innerHTML = '';
+                
+                this.points.forEach((point, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'point-item';
+                    item.innerHTML = `
+                        <span>${index + 1}:</span>
+                        <span class="point-coords">(${point.x}, ${point.y})</span>
+                        <button class="delete-point" data-index="${index}">×</button>
+                    `;
+                    list.appendChild(item);
+                });
+                
+                // Обработчики удаления точек
+                list.querySelectorAll('.delete-point').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        this.saveState();
+                        this.points.splice(index, 1);
+                        this.render();
+                        this.updateUI();
+                    });
+                });
+            }
+
+            updateCodeDisplay() {
+                const display = document.getElementById('coordsDisplay');
+                
+                if (this.points.length === 0 && this.lines.length === 0 && this.triangles.length === 0) {
+                    display.innerHTML = '<div style="color: #68d391;"># Пока точек нет</div>';
+                    return;
+                }
+                
+                let code = '<div style="color: #68d391;"># Сгенерированный код</div>';
+                code += '<div style="color: #a0aec0;">import numpy as np</div><br>';
+                
+                // Точки
+                if (this.points.length > 0) {
+                    code += '<div style="color: #fbb6ce;"># Отдельные точки</div>';
+                    code += '<div style="color: #ffffff;">points = np.array([</div>';
+                    this.points.forEach((point, i) => {
+                        code += `<div style="color: #90cdf4;">    ${point.x}, ${point.y},  # точка ${i + 1}</div>`;
+                    });
+                    code += '<div style="color: #ffffff;">], dtype=\'f4\')</div><br>';
+                }
+                
+                // Линии
+                if (this.lines.length > 0) {
+                    this.lines.forEach((line, i) => {
+                        code += `<div style="color: #fbb6ce;"># Линия ${i + 1}</div>`;
+                        code += `<div style="color: #ffffff;">line${i + 1} = np.array([</div>`;
+                        line.forEach(point => {
+                            code += `<div style="color: #90cdf4;">    ${point.x}, ${point.y},</div>`;
+                        });
+                        code += '<div style="color: #ffffff;">], dtype=\'f4\')</div><br>';
+                    });
+                }
+                
+                // Треугольники
+                if (this.triangles.length > 0) {
+                    this.triangles.forEach((triangle, i) => {
+                        code += `<div style="color: #fbb6ce;"># Треугольник ${i + 1}</div>`;
+                        code += `<div style="color: #ffffff;">triangle${i + 1} = np.array([</div>`;
+                        triangle.forEach(point => {
+                            code += `<div style="color: #90cdf4;">    ${point.x}, ${point.y},</div>`;
+                        });
+                        code += '<div style="color: #ffffff;">], dtype=\'f4\')</div><br>';
+                    });
+                }
+                
+                display.innerHTML = code;
+            }
+
+            copyCode() {
+                let code = 'import numpy as np\n\n';
+                
+                if (this.points.length > 0) {
+                    code += '# Отдельные точки\n';
+                    code += 'points = np.array([\n';
+                    this.points.forEach((point, i) => {
+                        code += `    ${point.x}, ${point.y},  # точка ${i + 1}\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                }
+                
+                this.lines.forEach((line, i) => {
+                    code += `# Линия ${i + 1}\n`;
+                    code += `line${i + 1} = np.array([\n`;
+                    line.forEach(point => {
+                        code += `    ${point.x}, ${point.y},\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                });
+                
+                this.triangles.forEach((triangle, i) => {
+                    code += `# Треугольник ${i + 1}\n`;
+                    code += `triangle${i + 1} = np.array([\n`;
+                    triangle.forEach(point => {
+                        code += `    ${point.x}, ${point.y},\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                });
+                
+                navigator.clipboard.writeText(code).then(() => {
+                    const btn = document.getElementById('copyBtn');
+                    const original = btn.textContent;
+                    btn.textContent = '✓ Скопировано!';
+                    btn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.style.background = '';
+                    }, 2000);
+                });
+            }
+
+            exportToFile() {
+                const code = this.generatePythonCode();
+                const blob = new Blob([code], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'opengl_coordinates.py';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            generatePythonCode() {
+                let code = '# Сгенерировано OpenGL Coordinate Visualizer\n';
+                code += 'import numpy as np\n\n';
+                
+                if (this.points.length > 0) {
+                    code += '# Отдельные точки\n';
+                    code += 'points = np.array([\n';
+                    this.points.forEach((point, i) => {
+                        code += `    ${point.x}, ${point.y},  # точка ${i + 1}\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                }
+                
+                this.lines.forEach((line, i) => {
+                    code += `# Линия ${i + 1}\n`;
+                    code += `line${i + 1} = np.array([\n`;
+                    line.forEach(point => {
+                        code += `    ${point.x}, ${point.y},\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                });
+                
+                this.triangles.forEach((triangle, i) => {
+                    code += `# Треугольник ${i + 1}\n`;
+                    code += `triangle${i + 1} = np.array([\n`;
+                    triangle.forEach(point => {
+                        code += `    ${point.x}, ${point.y},\n`;
+                    });
+                    code += '], dtype=\'f4\')\n\n';
+                });
+                
+                return code;
+            }
+
+            // Быстрое создание фигур
+            createSquare() {
+                this.saveState();
+                // Квадрат слева как в вашем коде
+                const square = [
+                    { x: -0.8, y: -0.3 },  // левый нижний
+                    { x: -0.2, y: -0.3 },  // правый нижний
+                    { x: -0.8, y: 0.3 },   // левый верхний
+                    { x: -0.2, y: -0.3 },  // правый нижний
+                    { x: -0.2, y: 0.3 },   // правый верхний
+                    { x: -0.8, y: 0.3 }    // левый верхний
+                ];
+                
+                this.triangles.push([square[0], square[1], square[2]]);
+                this.triangles.push([square[3], square[4], square[5]]);
+                this.render();
+                this.updateUI();
+            }
+
+            createRectangle() {
+                this.saveState();
+                // Создаем прямоугольник справа
+                const rect = [
+                    { x: 0.2, y: -0.4 },   // левый нижний
+                    { x: 0.8, y: -0.4 },   // правый нижний
+                    { x: 0.2, y: 0.2 },    // левый верхний
+                    { x: 0.8, y: -0.4 },   // правый нижний
+                    { x: 0.8, y: 0.2 },    // правый верхний
+                    { x: 0.2, y: 0.2 }     // левый верхний
+                ];
+                
+                this.triangles.push([rect[0], rect[1], rect[2]]);
+                this.triangles.push([rect[3], rect[4], rect[5]]);
+                this.render();
+                this.updateUI();
+            }
+
+            createTriangleShape() {
+                this.saveState();
+                // Треугольник как в вашем коде
+                const triangle = [
+                    { x: 0.2, y: -0.3 },   // левый
+                    { x: 0.8, y: -0.3 },   // правый
+                    { x: 0.5, y: 0.3 }     // верх
+                ];
+                
+                this.triangles.push(triangle);
+                this.render();
+                this.updateUI();
+            }
+
+            importCode() {
+                const code = document.getElementById('importCode').value;
+                if (!code.trim()) return;
+
+                try {
+                    this.saveState();
+                    this.parseImportedCode(code);
+                    this.render();
+                    this.updateUI();
+                    
+                    // Очищаем поле ввода
+                    document.getElementById('importCode').value = '';
+                    
+                    // Показываем успех
+                    const btn = document.getElementById('importBtn');
+                    const original = btn.textContent;
+                    btn.textContent = '✓ Импортировано!';
+                    btn.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.style.background = '';
+                    }, 2000);
+                } catch (error) {
+                    alert('Ошибка импорта: ' + error.message);
+                }
+            }
+
+            parseImportedCode(code) {
+                // Регулярные выражения для поиска массивов numpy
+                const arrayRegex = /np\.array\(\[([\s\S]*?)\]/g;
+                const numberRegex = /-?\d+\.?\d*/g;
+                
+                let match;
+                while ((match = arrayRegex.exec(code)) !== null) {
+                    const content = match[1];
+                    const numbers = content.match(numberRegex);
+                    
+                    if (numbers && numbers.length >= 6 && numbers.length % 2 === 0) {
+                        const points = [];
+                        for (let i = 0; i < numbers.length; i += 2) {
+                            points.push({
+                                x: parseFloat(numbers[i]),
+                                y: parseFloat(numbers[i + 1])
+                            });
+                        }
+                        
+                        // Если 6 точек - это два треугольника (квадрат)
+                        if (points.length === 6) {
+                            this.triangles.push([points[0], points[1], points[2]]);
+                            this.triangles.push([points[3], points[4], points[5]]);
+                        }
+                        // Если 3 точки - треугольник
+                        else if (points.length === 3) {
+                            this.triangles.push(points);
+                        }
+                        // Иначе добавляем как отдельные точки
+                        else {
+                            this.points.push(...points);
+                        }
+                    }
+                }
+            }
+
+            clear() {
+                if (confirm('Очистить весь холст?')) {
+                    this.saveState();
+                    this.points = [];
+                    this.lines = [];
+                    this.triangles = [];
+                    this.tempPoints = [];
+                    this.render();
+                    this.updateUI();
+                }
+            }
+        }
+
+        // Инициализация
+        window.addEventListener('DOMContentLoaded', () => {
+            new CoordinateVisualizer();
+        });
+    </script>
+</body>
+</html></title>
+</head>
+<body>
+
+</body>
+</html>
