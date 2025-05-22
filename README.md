@@ -41,7 +41,7 @@ or
 ```bash
 ./run.sh
 ```
-or use TreatEngine.exe if you're on Windows
+or check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for compiled executable files
 
 ---
 
