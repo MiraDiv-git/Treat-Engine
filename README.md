@@ -30,7 +30,7 @@ giving it a read before forking the engine ;)
 ```bash
 git clone https://github.com/MiraDiv-git/Treat-Engine.git
 ```
-2. Create virtual environment:
+2. Create virtual environment inside this folder:
 ```bash
 python -m venv .venv
 ```
