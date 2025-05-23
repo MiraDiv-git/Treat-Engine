@@ -41,13 +41,9 @@ python -m venv .venv
 ```
 4. Run Treat Engine:
 
-**On Linux / MacOS:**
 ```bash
-./run.sh
-```
-**On Windows:**
-```bash
-run.bat
+./run.sh # on Linux / MacOS
+run.bat # on Windows
 ```
 **Or run it manually:**
 ```bash
