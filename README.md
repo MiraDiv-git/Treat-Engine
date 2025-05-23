@@ -125,6 +125,9 @@ We welcome contributions to Treat Engine! Here's how you can help:
 ## License
 This project is distributed under [GNU General Public License v.2.0](LICENSE)
 
+However, the games or applications developed using Treat Engine **are not required to be 
+licensed under the GPL**. You may license your games under any terms of your choice, 
+provided you do not modify and redistribute the Treat engine itself.
 
 
 ## Contact

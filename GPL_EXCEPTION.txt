@@ -1,0 +1,8 @@
+Runtime Exception to the GPL v2 License for Treat Engine:
+
+You may use this software to create and distribute games or applications without
+those games or applications being subject to the terms of the GNU General Public License,
+provided that you do not modify and redistribute the Treat Engine itself.
+
+This exception does not grant you rights to distribute modified versions of the Treat Engine
+under any license other than the GPL.
