@@ -18,7 +18,7 @@ giving it a read before forking the engine ;)
 ## Features
 
 - Game logic scripting with **Python**
-- Rendering via **ModernGL** (*OpenGL*)  
+- Rendering via **ModernGL** (*OpenGL*)
 - Lightweight and minimalistic
 - Open-source code under GPL 2.0 license
 
@@ -30,20 +30,27 @@ giving it a read before forking the engine ;)
 ```bash
 git clone https://github.com/MiraDiv-git/Treat-Engine.git
 ```
+
 2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
 3. Run Treat Engine:
-```bash
-python main.py
-```
-or
+
+**On Linux / MacOS:**
 ```bash
 ./run.sh
 ```
-or check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for 
+**On Windows:**
+```bash
+run.bat
+```
+**Or run it manually:**
+```bash
+python main.py
+```
+You can also check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for 
 compiled executable files
 
 
