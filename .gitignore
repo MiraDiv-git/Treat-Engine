@@ -1,3 +1,7 @@
 .idea/
 .venv/
 supersecretdevtools/
+build/
+__pycache__/
+
+*.py[cod]
