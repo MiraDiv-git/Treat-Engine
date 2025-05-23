@@ -45,7 +45,7 @@ python -m venv .venv
 ./run.sh # on Linux / MacOS
 run.bat # on Windows
 ```
-**Or run it manually:**
+Or run it manually:
 ```bash
 ./.venv/bin/python main.py # on Linux / MacOS
 .venv\Scripts\python.exe main.py # on Windows
