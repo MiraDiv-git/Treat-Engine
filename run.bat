@@ -1,2 +1,3 @@
 @echo off
-.\.venv\Scripts\python.exe main.py
+.\.venv\Scripts\activate.bat
+python.exe main.py
