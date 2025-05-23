@@ -1,6 +1,7 @@
 # core/renderer.py
 import numpy as np
 import moderngl
+import os
 
 class Renderer:
     def __init__(self, ctx):
@@ -117,11 +118,16 @@ class Renderer:
             line14, line15, line16, line17, line18, line19, line20, line21
         ]
 
+        def rel_path(*parts):
+            return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", *parts))
+
         # Boofers
-        self.prog = self.ctx.program(
-            vertex_shader=open("shaders/basic.vert").read(),
-            fragment_shader=open("shaders/basic.frag").read()
-        )
+        with open(rel_path("shaders", "basic.vert")) as vs_file, \
+                open(rel_path("shaders", "basic.frag")) as fs_file:
+            self.prog = self.ctx.program(
+                vertex_shader=vs_file.read(),
+                fragment_shader=fs_file.read()
+            )
 
         # VBO and VAO lists
         self.vbos = []
