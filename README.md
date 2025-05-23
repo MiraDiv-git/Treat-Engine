@@ -129,6 +129,8 @@ However, the games or applications developed using Treat Engine **are not requir
 licensed under the GPL**. You may license your games under any terms of your choice, 
 provided you do not modify and redistribute the Treat engine itself.
 
+See [GPL Exception](GPL_EXCEPTION) for details.
+
 
 ## Contact
 If you have questions or suggestions — feel free to *open an issue*
