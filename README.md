@@ -30,13 +30,16 @@ giving it a read before forking the engine ;)
 ```bash
 git clone https://github.com/MiraDiv-git/Treat-Engine.git
 ```
-
-2. Install dependencies:
+2. Create virtual environment:
 ```bash
-pip install -r requirements.txt
+python -m venv .venv
 ```
-
-3. Run Treat Engine:
+3. Install dependencies:
+```bash
+./.venv/bin/pip install -r requirements.txt # on Linux / MacOS
+.venv\Scripts\pip.exe install -r requirements.txt # on Windows
+```
+4. Run Treat Engine:
 
 **On Linux / MacOS:**
 ```bash
@@ -48,7 +51,8 @@ run.bat
 ```
 **Or run it manually:**
 ```bash
-python main.py
+./.venv/bin/python main.py # on Linux / MacOS
+.venv\Scripts\python.exe main.py # on Windows
 ```
 You can also check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for 
 compiled executable files
