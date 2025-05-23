@@ -1,3 +1,5 @@
+Copyright (C) 2025 Terokhin Myroslav (MiraDiv)
+
 Runtime Exception to the GPL v2 License for Treat Engine:
 
 You may use this software to create and distribute games or applications without
@@ -6,3 +8,6 @@ provided that you do not modify and redistribute the Treat Engine itself.
 
 This exception does not grant you rights to distribute modified versions of the Treat Engine
 under any license other than the GPL.
+
+This exception applies only to the runtime components of Treat Engine
+that are linked into the final executable of games or applications.

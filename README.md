@@ -123,6 +123,8 @@ We welcome contributions to Treat Engine! Here's how you can help:
 
 
 ## License
+Copyright (C) 2025 Terokhin Myroslav (MiraDiv)
+
 This project is distributed under [GNU General Public License v.2.0](LICENSE)
 
 However, the games or applications developed using Treat Engine **are not required to be 
