@@ -17,10 +17,11 @@ giving it a read before forking the engine ;)
 
 ## Features
 
-- Game logic scripting with **Python**
-- Rendering via **ModernGL** (*OpenGL*)
-- Lightweight and minimalistic
-- Open-source code under GPL 2.0 license
+- **Python Scripting** - Write game logic in familiar Python syntax
+- **ModernGL Rendering** - Hardware-accelerated OpenGL graphics
+- **Cross-Platform - Windows**, Linux, macOS support
+- **2D Graphics** - Sprite rendering, textures, and animations
+- **Lightweight Architecture** - Minimal overhead, fast startup times
 
 
 
@@ -68,22 +69,51 @@ There will be docs. Someday
 ## Roadmap
 
 ### Current Version (v0.1 - Alpha)
-- [x] Basic rendering pipeline
-- [x] Python scripting integration  
+- [ ] Basic rendering pipeline
+- [ ] Python scripting integration
+- [ ] Asset loading (textures, sounds)
 - [ ] Sprite rendering system
 - [ ] Input handling (keyboard/mouse)
 
 ### v0.2 - Core Features
-- [ ] Audio system integration
+- [ ] Audio system
 - [ ] Basic collision detection
 - [ ] Scene management
-- [ ] Asset loading (textures, sounds)
+- [ ] Live Reload system
+- [ ] Basic error handling/logging system
 
-### v0.3 - Developer Experience  
-- [ ] Built-in editor tools
+### v0.3 - Basic GUI Editor
+- [ ] Render preview
+- [ ] Scene editor
+- [ ] Object hierarchy
+- [ ] Built-in explorer
 - [ ] Debug renderer
 - [ ] Performance profiler
 - [ ] Documentation website
+- [ ] Sprite editor
+- [ ] Tile Grid
+- [ ] Build profiles
+
+### v0.4 - Advancing Features
+- [ ] Object inspector
+- [ ] Sprite animation system
+- [ ] Positional audio
+- [ ] Audio mixer
+- [ ] Tilemap editor
+- [ ] UI system
+- [ ] Text system
+- [ ] More options in build profiles
+- [ ] Responsive UI scaling
+
+### v0.5 - Component System
+- [ ] Adjustable camera
+- [ ] Collider components
+- [ ] UI objects (Buttons, Sliders, etc)
+- [ ] 2D Physics
+- [ ] Dialogue dynamic component
+- [ ] Save/Load system
+- [ ] Settings management
+- [ ] Gamepad support
 
 ### v1.0 - Stable Release
 - [ ] Complete API documentation
@@ -91,10 +121,12 @@ There will be docs. Someday
 - [ ] Performance optimizations
 - [ ] Cross-platform builds
 
-### Future Ideas 💭
-- Tilemap editor
-- Mobile platform support
+### Future Ideas
 - Plugin system
+- Shader editor
+- Steam integration
+- Mobile platform support
+- Advanced 2D Lighting system
 
 *Roadmap is subject to change based on community feedback and development priorities*
 

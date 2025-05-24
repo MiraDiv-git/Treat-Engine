@@ -1,0 +1,11 @@
+- **Python Scripting** - Write game logic in familiar Python syntax
+- **ModernGL Rendering** - Hardware-accelerated OpenGL graphics
+- **Cross-Platform - Windows**, Linux, macOS support
+- **2D Graphics** - Sprite rendering, textures, and animations
+- **Input Handling** - Keyboard, mouse, and gamepad support
+- **Audio System** - Sound effects and background music
+- **Scene Management** - Easy level switching and game states
+- **Collision Detection** - Built-in physics and collision systems
+- **Live Reloading** - Hot-swap scripts without restart
+- **Lightweight Architecture** - Minimal overhead, fast startup times
+- **Treat Editor** - Visual development environment
