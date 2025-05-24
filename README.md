@@ -4,7 +4,7 @@
 
 
 
-## **About:**  
+## What is Treat Engine?
 Treat Engine is a simple but powerful 2D engine, oriented toward indie devs.
 
 It uses **Python** as the *scripting language* and **ModernGL** as the *rendering API*,
@@ -52,6 +52,11 @@ Or run it manually:
 ```
 You can also check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for 
 compiled executable files
+
+
+
+## Support the project
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L3L21FDZL2)
 
 
 
