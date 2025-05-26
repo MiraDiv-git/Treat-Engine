@@ -73,6 +73,21 @@ compiled executable files
 
 
 
+## Building
+To build the project into executable file, use automated scripts in *build* folder.
+
+If you need to build it manually, there are minimal commands:
+```bash
+# On Linux / macOS
+./.venv/bin/nuitka main.py --onefile --include-data-dir=shaders=shaders --output-dir=./build/unix
+
+# On Windows
+.venv\Scripts\nuitka.exe main.py --onefile --include-data-dir=shaders=shaders --output-dir=.\build\windows
+```
+The last flag, --output-dir, is for the directory where compiled files will be generated.
+You can keep it empty, then compiled files will be generated inside project's folder
+
+
 ## Support the project
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/L3L21FDZL2)
 
