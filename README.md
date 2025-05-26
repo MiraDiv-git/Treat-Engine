@@ -74,9 +74,11 @@ compiled executable files
 
 
 ## Building
-To build the project into executable file, use automated scripts in *build* folder.
+Treat Engine uses [Nuitka](https://nuitka.net/) for compilation.
 
-If you need to build it manually, there are minimal commands:
+To build the project into executable file, **use automated scripts in *build* folder.**
+
+If you prefer to build it manually, here are the minimal commands:
 ```bash
 # On Linux / macOS
 ./.venv/bin/nuitka main.py --onefile --include-data-dir=shaders=shaders --output-dir=./build/unix
@@ -84,8 +86,8 @@ If you need to build it manually, there are minimal commands:
 # On Windows
 .venv\Scripts\nuitka.exe main.py --onefile --include-data-dir=shaders=shaders --output-dir=.\build\windows
 ```
-The last flag, --output-dir, is for the directory where compiled files will be generated.
-You can keep it empty, then compiled files will be generated inside project's folder
+The --output-dir flag specifies the directory where the compiled files will be generated.
+You can omit it — in that case, the files will be placed directly in the project root.
 
 
 ## Support the project
