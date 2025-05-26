@@ -76,7 +76,7 @@ compiled executable files
 ## Building
 Treat Engine uses [Nuitka](https://nuitka.net/) for compilation.
 
-To build the project into executable file, **use automated scripts in *build* folder.**
+To build the project into executable file, use automated scripts in [build](build) folder.
 
 If you prefer to build it manually, here are the minimal commands:
 ```bash
