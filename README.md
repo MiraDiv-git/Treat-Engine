@@ -84,7 +84,7 @@ If you prefer to build it manually, here are the minimal commands:
 ./.venv/bin/nuitka main.py --onefile --include-data-dir=shaders=shaders --output-dir=./build/unix
 
 # On Windows (make sure you have Visual Studio Build Tools installed)
-.venv\Scripts\nuitka.cmd main.py --onefile --include-data-dir=shaders=shaders --output-dir=.\build\windows --msvc=latest
+.venv\Scripts\nuitka.cmd main.py --onefile --windows-console-mode=disable --include-data-dir=shaders=shaders --output-dir=.\build\windows --msvc=latest
 ```
 The --output-dir flag specifies the directory where the compiled files will be generated.
 You can omit it — in that case, the files will be placed directly in the project root.
