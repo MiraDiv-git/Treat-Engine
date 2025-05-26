@@ -19,7 +19,7 @@ giving it a read before forking the engine ;)
 
 - **Python Scripting** - Write game logic in familiar Python syntax
 - **ModernGL Rendering** - Hardware-accelerated OpenGL graphics
-- **Cross-Platform - Windows**, Linux, macOS support
+- **Cross-Platform** - Windows, Linux, macOS support
 - **2D Graphics** - Sprite rendering, textures, and animations
 - **Lightweight Architecture** - Minimal overhead, fast startup times
 
