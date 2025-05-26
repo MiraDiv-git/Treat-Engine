@@ -27,6 +27,15 @@ giving it a read before forking the engine ;)
 
 ## Installation
 
+### Automated:
+1. Clone repository:  
+```bash
+git clone https://github.com/MiraDiv-git/Treat-Engine.git
+```
+2. Simply run **install.sh** on _Linux / macOS_ or **install.bat** on _Windows_.
+Let the scripts do all work for you :)
+
+### Manual:
 1. Clone repository:  
 ```bash
 git clone https://github.com/MiraDiv-git/Treat-Engine.git
@@ -37,18 +46,26 @@ python -m venv .venv
 ```
 3. Install dependencies:
 ```bash
-./.venv/bin/pip install -r requirements.txt # on Linux / MacOS
+./.venv/bin/pip install -r requirements.txt # on Linux / macOS
 .venv\Scripts\pip.exe install -r requirements.txt # on Windows
+```
+Also install TKInter support on Linux / macOS:
+```bash
+sudo apt install -y python3.13-tk # Ubuntu / Debian
+sudo yum install -y python3.13-tkinter # RHEL / CentOS
+sudo dnf install -y python3.13-tkinter # Fedora
+sudo pacman -S --noconfirm tk # Arch
+brew install python-tk@3.13 # macOS using Homebrew
 ```
 4. Run Treat Engine:
 
 ```bash
-./run.sh # on Linux / MacOS
+./run.sh # on Linux / macOS
 run.bat # on Windows
 ```
 Or run it manually:
 ```bash
-./.venv/bin/python main.py # on Linux / MacOS
+./.venv/bin/python main.py # on Linux / macOS
 .venv\Scripts\python.exe main.py # on Windows
 ```
 You can also check the [Releases](https://github.com/MiraDiv-git/Treat-Engine/releases) page for 
