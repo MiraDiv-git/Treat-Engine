@@ -83,7 +83,7 @@ If you prefer to build it manually, here are the minimal commands:
 # On Linux / macOS
 ./.venv/bin/nuitka main.py --onefile --include-data-dir=shaders=shaders --output-dir=./build/unix
 
-# On Windows
+# On Windows (make sure you have Visual Studio Build Tools installed)
 .venv\Scripts\nuitka.cmd main.py --onefile --include-data-dir=shaders=shaders --output-dir=.\build\windows
 ```
 The --output-dir flag specifies the directory where the compiled files will be generated.
