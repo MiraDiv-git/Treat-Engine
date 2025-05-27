@@ -7,7 +7,9 @@
 ## What is Treat Engine?
 Treat Engine is a simple but powerful 2D engine, oriented toward indie devs.
 
-It uses **Python** as the *scripting language* and **ModernGL** as the *rendering API*,
+It uses [**Python**](https://www.python.org/downloads/release/python-3133/) 
+as the scripting language and 
+[**ModernGL**](https://moderngl.readthedocs.io/) as the rendering API,
 making development simple and giving you full control over the hardware.
 
 It is distributed as open-source under the GPL 2.0 licence - highly recommend 
@@ -32,7 +34,7 @@ giving it a read before forking the engine ;)
 ```bash
 git clone https://github.com/MiraDiv-git/Treat-Engine.git
 ```
-2. Simply run **install.sh** on _Linux / macOS_ or **install.bat** on _Windows_.
+2. Simply run [**install.sh**](install.sh) on _Linux / macOS_ or [**install.bat**](install.bat) on _Windows_.
 Let the scripts do all work for you :)
 
 ### Manual:
