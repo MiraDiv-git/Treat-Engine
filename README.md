@@ -80,7 +80,7 @@ To build the project into executable file, use automated scripts in [build](buil
 
 If you prefer to build it manually, here are the minimal commands:
 ```bash
-# On Linux / macOS
+# On Linux / macOS (Sometimes need to run twice)
 ./.venv/bin/nuitka main.py --onefile --include-data-dir=shaders=shaders --output-dir=./build/unix
 
 # On Windows (make sure you have Visual Studio Build Tools installed)
